@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ArthaSūtra – Your Wealth Compass</title>
+  <title>ArthaSūtra 2.0 – Your Wealth Compass</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
@@ -368,6 +368,13 @@
     }
     .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(201,168,76,0.3); }
 
+    .btn-secondary {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+    }
+    .btn-secondary:hover { transform: translateY(-1px); border-color: var(--gold); }
+
     .btn-ghost {
       background: transparent;
       border: 1px solid var(--border);
@@ -670,6 +677,91 @@
     }
     .alert-warn { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25); color: var(--gold-light); }
     .alert-info { background: rgba(79,124,255,0.08); border: 1px solid rgba(79,124,255,0.25); color: #8aabff; }
+    .version-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 6px;
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--gold);
+      background: rgba(201,168,76,0.08);
+      width: fit-content;
+    }
+    .hero-pill {
+      margin: 18px auto 0;
+      max-width: 680px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 999px;
+      padding: 14px 20px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+
+    /* ADVANCED TOOLS */
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media(max-width: 860px) { .mini-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media(max-width: 560px) {
+      .mini-grid { grid-template-columns: 1fr; }
+      .tax-row { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .tax-row .tr-save { align-self: flex-start; }
+      .btn-row { justify-content: stretch; }
+      .btn-row .btn { width: 100%; }
+      .hero-pill { border-radius: 14px; }
+    }
+    .feature-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      background: rgba(79,124,255,0.08);
+      border: 1px solid rgba(79,124,255,0.22);
+      color: #a9bcff;
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+    .compact-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 120px;
+    }
+    .compact-card .kicker {
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .compact-card .big {
+      color: var(--gold-light);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+    .compact-card .small {
+      color: var(--muted);
+      font-size: 0.76rem;
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+    .warning-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--gold-light);
+      line-height: 1.6;
+    }
   </style>
 </head>
 <body>
@@ -679,26 +771,38 @@
   <header>
     <div class="logo-mark">
       <div class="logo-icon">₹</div>
-      <div class="brand-name">ArthaSūtra<sup>™</sup></div>
+      <div>
+        <div class="brand-name">ArthaSūtra<sup>™</sup></div>
+        <div class="version-badge">v2.0</div>
+      </div>
     </div>
-    <h1>Your Wealth Compass</h1>
-    <p>Personalized financial planning crafted for India's next generation</p>
+    <h1 data-i18n="title">Your Wealth Compass</h1>
+    <p data-i18n="subtitle">Personalized financial planning crafted for India's next generation</p>
+    <div class="hero-pill">New in 2.0: smart savings, local languages, government schemes, and instant plan scoring.</div>
+    <div style="margin-left:auto; display:flex; gap:8px; align-items:center; margin-top:18px; justify-content:center; flex-wrap:wrap;">
+      <label for="lang-select" style="font-size:0.9rem; color:var(--muted);">Language</label>
+      <select id="lang-select" onchange="setLang(this.value)" aria-label="Language selector">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="ta">தமிழ்</option>
+      </select>
+    </div>
     <div class="gold-line"></div>
   </header>
 
   <!-- STEP NAV -->
   <div class="steps-nav">
-    <button class="step-btn active" onclick="showPanel(0)">Profile</button>
-    <button class="step-btn" onclick="showPanel(1)">Finances</button>
-    <button class="step-btn" onclick="showPanel(2)">Goals</button>
-    <button class="step-btn" onclick="showPanel(3)">My Plan</button>
+    <button class="step-btn active" onclick="showPanel(0)" data-i18n="step_profile">Profile</button>
+    <button class="step-btn" onclick="showPanel(1)" data-i18n="step_finances">Finances</button>
+    <button class="step-btn" onclick="showPanel(2)" data-i18n="step_goals">Goals</button>
+    <button class="step-btn" onclick="showPanel(3)" data-i18n="step_plan">My Plan</button>
   </div>
 
   <!-- PANEL 0: PROFILE -->
   <div class="panel active" id="panel-0">
     <div class="card">
-      <div class="card-title">👤 Personal Profile</div>
-      <div class="card-sub">Tell us about yourself to personalize your wealth journey</div>
+      <div class="card-title" data-i18n="profile_title">👤 Personal Profile</div>
+      <div class="card-sub" data-i18n="profile_sub">Tell us about yourself to personalize your wealth journey</div>
       <div class="form-grid">
         <div class="field">
           <label>Your Name</label>
@@ -727,29 +831,30 @@
             <option value="tier3">Tier 3 / Town</option>
           </select>
         </div>
-        <div class="field full">
-          <label>Risk Appetite</label>
-          <div class="risk-opts">
-            <div class="risk-opt selected" data-risk="conservative" onclick="selectRisk(this)">
-              <div class="risk-icon">🛡️</div>
-              <div class="risk-label">Conservative</div>
-            </div>
-            <div class="risk-opt" data-risk="balanced" onclick="selectRisk(this)">
-              <div class="risk-icon">⚖️</div>
-              <div class="risk-label">Balanced</div>
-            </div>
-            <div class="risk-opt" data-risk="growth" onclick="selectRisk(this)">
-              <div class="risk-icon">🚀</div>
-              <div class="risk-label">Growth</div>
-            </div>
-            <div class="risk-opt" data-risk="aggressive" onclick="selectRisk(this)">
-              <div class="risk-icon">⚡</div>
-              <div class="risk-label">Aggressive</div>
-            </div>
-          </div>
-        </div>
+              <div class="field full">
+                <label>Risk Appetite</label>
+                <div class="risk-opts">
+                  <div class="risk-opt selected" data-risk="conservative" onclick="selectRisk(this)" role="button" tabindex="0" aria-pressed="true">
+                    <div class="risk-icon">🛡️</div>
+                    <div class="risk-label">Conservative</div>
+                  </div>
+                  <div class="risk-opt" data-risk="balanced" onclick="selectRisk(this)" role="button" tabindex="0" aria-pressed="false">
+                    <div class="risk-icon">⚖️</div>
+                    <div class="risk-label">Balanced</div>
+                  </div>
+                  <div class="risk-opt" data-risk="growth" onclick="selectRisk(this)" role="button" tabindex="0" aria-pressed="false">
+                    <div class="risk-icon">🚀</div>
+                    <div class="risk-label">Growth</div>
+                  </div>
+                  <div class="risk-opt" data-risk="aggressive" onclick="selectRisk(this)" role="button" tabindex="0" aria-pressed="false">
+                    <div class="risk-icon">⚡</div>
+                    <div class="risk-label">Aggressive</div>
+                  </div>
+                </div>
+              </div>
       </div>
       <div class="btn-row">
+        <button class="btn btn-secondary" onclick="saveProfile()">Save Setup</button>
         <button class="btn btn-primary" onclick="nextPanel(1)">Continue →</button>
       </div>
     </div>
@@ -807,16 +912,16 @@
       <div class="card-title">🎯 Financial Goals</div>
       <div class="card-sub">Select all goals that resonate with your aspirations</div>
       <div class="goal-tags" id="goal-tags">
-        <div class="goal-tag selected" data-goal="emergency">🏦 Emergency Fund</div>
-        <div class="goal-tag" data-goal="retirement">👴 Retirement</div>
-        <div class="goal-tag" data-goal="home">🏠 Buy a Home</div>
-        <div class="goal-tag" data-goal="car">🚗 Buy a Car</div>
-        <div class="goal-tag" data-goal="education">🎓 Higher Education</div>
-        <div class="goal-tag" data-goal="travel">✈️ Travel</div>
-        <div class="goal-tag" data-goal="wedding">💍 Wedding</div>
-        <div class="goal-tag" data-goal="business">🏢 Start a Business</div>
-        <div class="goal-tag" data-goal="wealth">📈 Wealth Building</div>
-        <div class="goal-tag" data-goal="child">👶 Child's Future</div>
+        <div class="goal-tag selected" data-goal="emergency" role="button" tabindex="0" aria-pressed="true">🏦 Emergency Fund</div>
+        <div class="goal-tag" data-goal="retirement" role="button" tabindex="0" aria-pressed="false">👴 Retirement</div>
+        <div class="goal-tag" data-goal="home" role="button" tabindex="0" aria-pressed="false">🏠 Buy a Home</div>
+        <div class="goal-tag" data-goal="car" role="button" tabindex="0" aria-pressed="false">🚗 Buy a Car</div>
+        <div class="goal-tag" data-goal="education" role="button" tabindex="0" aria-pressed="false">🎓 Higher Education</div>
+        <div class="goal-tag" data-goal="travel" role="button" tabindex="0" aria-pressed="false">✈️ Travel</div>
+        <div class="goal-tag" data-goal="wedding" role="button" tabindex="0" aria-pressed="false">💍 Wedding</div>
+        <div class="goal-tag" data-goal="business" role="button" tabindex="0" aria-pressed="false">🏢 Start a Business</div>
+        <div class="goal-tag" data-goal="wealth" role="button" tabindex="0" aria-pressed="false">📈 Wealth Building</div>
+        <div class="goal-tag" data-goal="child" role="button" tabindex="0" aria-pressed="false">👶 Child's Future</div>
       </div>
 
       <div style="margin-top: 24px;" class="form-grid">
@@ -839,6 +944,75 @@
           <label>Desired Monthly Savings / Investment Target (₹)</label>
           <div class="input-prefix"><span>₹</span><input type="number" id="savings-target" placeholder="10000" min="0"/></div>
         </div>
+        <div class="field full">
+          <div class="feature-note">Advanced tools are optional. Fill any of these to unlock EMI, SIP, net worth, emergency fund, insurance, retirement, scenario, and inflation-adjusted goal insights in your plan.</div>
+        </div>
+
+        <div class="field">
+          <label>Current Emergency Fund (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="current-emergency" placeholder="50000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Current Investments (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="current-investments" placeholder="100000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Total Assets (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="assets" placeholder="300000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Total Liabilities (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="liabilities" placeholder="50000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Life Cover Already Held (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="life-cover" placeholder="0" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Health Cover Already Held (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="health-cover" placeholder="500000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Retirement Age</label>
+          <input type="number" id="retirement-age" placeholder="60" min="45" max="75"/>
+        </div>
+        <div class="field">
+          <label>Inflation Assumption (%)</label>
+          <input type="number" id="inflation-rate" placeholder="6" min="0" max="15" step="0.1"/>
+        </div>
+        <div class="field">
+          <label>Loan Amount for EMI (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="emi-principal" placeholder="1000000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Loan Rate (% p.a.)</label>
+          <input type="number" id="emi-rate" placeholder="9" min="0" max="30" step="0.1"/>
+        </div>
+        <div class="field">
+          <label>Loan Tenure (Years)</label>
+          <input type="number" id="emi-years" placeholder="5" min="1" max="40"/>
+        </div>
+        <div class="field">
+          <label>What-if Extra SIP (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="extra-sip" placeholder="2000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Custom Category Name</label>
+          <input type="text" id="custom-category-name" placeholder="Subscriptions"/>
+        </div>
+        <div class="field">
+          <label>Custom Category Spend (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="custom-category-amount" placeholder="999" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Goal Target Amount (₹)</label>
+          <div class="input-prefix"><span>₹</span><input type="number" id="custom-goal-target" placeholder="500000" min="0"/></div>
+        </div>
+        <div class="field">
+          <label>Goal Deadline (Years)</label>
+          <input type="number" id="custom-goal-years" placeholder="3" min="1" max="40"/>
+        </div>
+
       </div>
 
       <div class="btn-row">
@@ -854,7 +1028,9 @@
     <div class="btn-row">
       <button class="btn btn-ghost" onclick="nextPanel(2)">← Edit Inputs</button>
       <button class="btn btn-download" onclick="downloadPlan()">⬇ Download Plan (HTML)</button>
-      <button class="btn btn-primary" onclick="window.print()">🖨 Print / Save PDF</button>
+      <button class="btn btn-secondary" onclick="copyPlanSummary()">Copy Summary</button>
+      <button class="btn btn-ghost" onclick="resetSavedProfile()">Reset Saved Data</button>
+      <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
     </div>
   </div>
 
@@ -868,27 +1044,211 @@
 </footer>
 
 <script>
+// Localized number formatter
+const nf = new Intl.NumberFormat('en-IN');
 let selectedRisk = 'conservative';
 let selectedGoals = ['emergency'];
 let chartObj = null;
+let lastPlanSummary = '';
+
+const APP_CONFIG = {
+  taxYear: 'FY 2024-25',
+  assumptions: {
+    equityReturn: 0.12,
+    debtReturn: 0.07,
+    goldReturn: 0.06,
+    liquidReturn: 0.055,
+    retirementReturn: 0.09,
+    retirementInflation: 0.06
+  },
+  taxSlabs: {
+    new: [
+      { upTo: 300000, rate: 0 },
+      { upTo: 700000, rate: 0.05 },
+      { upTo: 1000000, rate: 0.10 },
+      { upTo: 1200000, rate: 0.15 },
+      { upTo: 1500000, rate: 0.20 },
+      { upTo: Infinity, rate: 0.30 }
+    ],
+    old: [
+      { upTo: 250000, rate: 0 },
+      { upTo: 500000, rate: 0.05 },
+      { upTo: 1000000, rate: 0.20 },
+      { upTo: Infinity, rate: 0.30 }
+    ]
+  }
+};
+
+// --- i18n: minimal translations and helpers ---
+const i18n = {
+  en: {
+    title: 'Your Wealth Compass',
+    subtitle: "Personalized financial planning crafted for India's next generation",
+    step_profile: 'Profile', step_finances: 'Finances', step_goals: 'Goals', step_plan: 'My Plan',
+    profile_title: '👤 Personal Profile', profile_sub: 'Tell us about yourself to personalize your wealth journey',
+    enter_income: 'Please enter your monthly income first.',
+    action_plan_title: '🚀 30-Day Action Plan',
+    action_plan_sub: 'Start today. Wealth is built in consistent small steps.',
+    week1: '✅ Week 1', week1_action1: 'Open a Demat + MF account (Zerodha / Groww / Kuvera)', week1_action2: 'Set up SIP mandates for {amt}/month in equity funds',
+    week2_action1: 'Open PPF account at post office or SBI. Start ₹500/month', week2_action2: 'Open NPS account at eNPS.nsdl.com for pension + tax benefit',
+    week3_action1: 'Buy first Sovereign Gold Bond when RBI window opens (twice a year)',
+    week4_action1: 'Review and track all investments with Moneycontrol / ET Money',
+    remember_alert: '⚡ Remember: Automate everything. Set and don\'t touch for 3+ years. Time in market > timing the market.'
+  },
+  hi: {
+    title: 'आपकी धन कंपास',
+    subtitle: 'भारत की अगली पीढ़ी के लिए व्यक्तिगत वित्तीय योजना',
+    step_profile: 'प्रोफ़ाइल', step_finances: 'वित्त', step_goals: 'लक्ष्य', step_plan: 'मेरा योजना',
+    profile_title: '👤 व्यक्तिगत प्रोफ़ाइल', profile_sub: 'अपनी धन यात्रा को निजी बनाएं',
+    enter_income: 'कृपया पहले अपनी मासिक आय दर्ज करें।',
+    action_plan_title: '🚀 30-दिन क्रियान्वयन योजना', action_plan_sub: 'आज शुरू करें। समृद्धि छोटे लगातार कदमों से बनती है।',
+    week1: '✅ सप्ताह 1', week1_action1: 'Demat + MF खाता खोलें (Zerodha / Groww / Kuvera)', week1_action2: 'इक्विटी फंड्स में {amt}/माह के लिए SIP सेट करें',
+    week2_action1: 'पोस्ट ऑफिस या SBI में PPF खाता खोलें। ₹500/माह शुरू करें', week2_action2: 'पेंशन और कर लाभ के लिए eNPS.nsdl.com पर NPS खाता खोलें',
+    week3_action1: 'RBI विंडो खुलने पर पहला Sovereign Gold Bond खरीदें (साल में दो बार)',
+    week4_action1: 'Moneycontrol / ET Money के साथ सभी निवेशों की समीक्षा और ट्रैक करें',
+    remember_alert: '⚡ याद रखें: सब कुछ स्वचालित करें। 3+ वर्षों तक न छेड़ें। बाजार में समय > बाजार का समय।'
+  },
+  ta: {
+    title: 'உங்கள் செல்வம் திசைஅளவை',
+    subtitle: "இந்தியாவின் அடுத்த தலைமுறைக்கு தனிப்பயன் நிதி திட்டமிடுதல்",
+    step_profile: 'புரோஃபைல்', step_finances: 'நிதி', step_goals: 'நோக்கங்கள்', step_plan: 'என் திட்டம்',
+    profile_title: '👤 தனிப்பட்ட செயல்திட்டம்', profile_sub: 'உங்கள் செல்வ பயணத்தை தனிப்பயனாக்கவும்',
+    enter_income: 'தயவுசெய்து முதலில் உங்கள் மாத வருமானத்தை உள்ளிடவும்.',
+    action_plan_title: '🚀 30-நாள் செயல்திட்டம்', action_plan_sub: 'இன்று தொடங்குங்கள். நிலையான சிறிய படிகளால் செல்வம் உருவாகிறது.',
+    week1: '✅ வாரம் 1', week1_action1: 'Demat + MF கணக்கு திறக்கவும் (Zerodha / Groww / Kuvera)', week1_action2: 'இனிவணி நிதிகளில் {amt}/மாதத்திற்கு SIP அமைக்கவும்',
+    week2_action1: 'அஞ்சலகம் அல்லது SBI-யில் PPF கணக்கு திறக்கவும். ₹500/மாதம் தொடங்கு', week2_action2: 'பென்ஷன் மற்றும் வரி நன்மைக்காக eNPS.nsdl.com-இல் NPS கணக்கு திறக்கவும்',
+    week3_action1: 'RBI விண்டோ திறக்கும் பொழுது முதல் Sovereign Gold Bond வாங்கவும் (ஆண்டு இரு முறை)',
+    week4_action1: 'Moneycontrol / ET Money உடன் அனைத்து முதலீடுகளையும் மதிப்பாய்வு செய்யவும்',
+    remember_alert: '⚡ நினைவில் கொள்ளுங்கள்: அனைத்தையும் தானாகச் செய்யவும். 3+ ஆண்டுகள் தொட்டுவிடாதீர்கள்.'
+  }
+};
+let lang = localStorage.getItem('arthasutra_lang') || 'en';
+function t(key, vars) {
+  const s = (i18n[lang] && i18n[lang][key]) || i18n.en[key] || key;
+  if (!vars) return s;
+  return Object.keys(vars).reduce((acc,k)=> acc.replace(new RegExp('\{'+k+'\}','g'), vars[k]), s);
+}
+function setLang(l) { lang = l; localStorage.setItem('arthasutra_lang', l); translatePage(); }
+function translatePage() {
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ const k = el.getAttribute('data-i18n'); el.textContent = t(k); });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{ const k = el.getAttribute('data-i18n-placeholder'); el.setAttribute('placeholder', t(k)); });
+  const sel = document.getElementById('lang-select'); if (sel) sel.value = lang;
+}
+
+function syncRiskUI() {
+  document.querySelectorAll('.risk-opt').forEach(r => {
+    const active = r.dataset.risk === selectedRisk;
+    r.classList.toggle('selected', active);
+    r.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+function syncGoalUI() {
+  document.querySelectorAll('.goal-tag').forEach(tag => {
+    const active = selectedGoals.includes(tag.dataset.goal);
+    tag.classList.toggle('selected', active);
+    tag.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+function saveProfile() {
+  const profile = {
+    name: getStr('name'),
+    age: getVal('age'),
+    occupation: getStr('occupation'),
+    cityTier: getStr('city-tier'),
+    selectedRisk,
+    selectedGoals,
+    horizon: getStr('horizon'),
+    taxRegime: getStr('tax-regime'),
+    savingsTarget: getVal('savings-target'),
+    currentEmergency: getVal('current-emergency'),
+    currentInvestments: getVal('current-investments'),
+    assets: getVal('assets'),
+    liabilities: getVal('liabilities'),
+    lifeCover: getVal('life-cover'),
+    healthCover: getVal('health-cover'),
+    retirementAge: getVal('retirement-age'),
+    inflationRate: getVal('inflation-rate'),
+    emiPrincipal: getVal('emi-principal'),
+    emiRate: getVal('emi-rate'),
+    emiYears: getVal('emi-years'),
+    extraSip: getVal('extra-sip'),
+    customCategoryName: getStr('custom-category-name'),
+    customCategoryAmount: getVal('custom-category-amount'),
+    customGoalTarget: getVal('custom-goal-target'),
+    customGoalYears: getVal('custom-goal-years'),
+    lang
+  };
+  localStorage.setItem('arthasutra_profile', JSON.stringify(profile));
+  alert('Setup saved locally. You can continue anytime from the same browser.');
+}
+
+function loadProfile() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('arthasutra_profile') || 'null');
+    if (!saved) return;
+    if (saved.name) document.getElementById('name').value = saved.name;
+    if (saved.age) document.getElementById('age').value = saved.age;
+    if (saved.occupation) document.getElementById('occupation').value = saved.occupation;
+    if (saved.cityTier) document.getElementById('city-tier').value = saved.cityTier;
+    if (saved.horizon) document.getElementById('horizon').value = saved.horizon;
+    if (saved.taxRegime) document.getElementById('tax-regime').value = saved.taxRegime;
+    if (saved.savingsTarget) document.getElementById('savings-target').value = saved.savingsTarget;
+    ['currentEmergency','currentInvestments','assets','liabilities','lifeCover','healthCover','retirementAge','inflationRate','emiPrincipal','emiRate','emiYears','extraSip','customCategoryName','customCategoryAmount','customGoalTarget','customGoalYears'].forEach(key => {
+      const id = key.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
+      const el = document.getElementById(id);
+      if (el && saved[key] !== undefined && saved[key] !== '') el.value = saved[key];
+    });
+    if (Array.isArray(saved.selectedGoals)) selectedGoals = saved.selectedGoals;
+    if (saved.selectedRisk) selectedRisk = saved.selectedRisk;
+    if (saved.lang) lang = saved.lang;
+    syncRiskUI();
+    syncGoalUI();
+    translatePage();
+  } catch (e) {
+    console.warn('Could not load saved profile:', e);
+  }
+}
+
+translatePage();
+loadProfile();
+
 
 function selectRisk(el) {
-  document.querySelectorAll('.risk-opt').forEach(r => r.classList.remove('selected'));
+  document.querySelectorAll('.risk-opt').forEach(r => {
+    r.classList.remove('selected');
+    r.setAttribute('aria-pressed', 'false');
+  });
   el.classList.add('selected');
+  el.setAttribute('aria-pressed', 'true');
   selectedRisk = el.dataset.risk;
 }
 
-document.querySelectorAll('.goal-tag').forEach(tag => {
-  tag.addEventListener('click', () => {
-    tag.classList.toggle('selected');
-    const g = tag.dataset.goal;
-    if (tag.classList.contains('selected')) {
-      if (!selectedGoals.includes(g)) selectedGoals.push(g);
-    } else {
-      selectedGoals = selectedGoals.filter(x => x !== g);
-    }
+// keyboard support for risk opts
+document.querySelectorAll('.risk-opt').forEach(el => {
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectRisk(el); }
   });
 });
+
+// goal tags: click + keyboard + aria updates
+document.querySelectorAll('.goal-tag').forEach(tag => {
+  tag.addEventListener('click', () => toggleGoal(tag));
+  tag.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleGoal(tag); } });
+});
+
+function toggleGoal(tag) {
+  tag.classList.toggle('selected');
+  const g = tag.dataset.goal;
+  const pressed = tag.classList.contains('selected');
+  tag.setAttribute('aria-pressed', pressed ? 'true' : 'false');
+  if (pressed) {
+    if (!selectedGoals.includes(g)) selectedGoals.push(g);
+  } else {
+    selectedGoals = selectedGoals.filter(x => x !== g);
+  }
+}
 
 function showPanel(idx) {
   document.querySelectorAll('.panel').forEach((p, i) => {
@@ -906,14 +1266,15 @@ function getVal(id) { return parseFloat(document.getElementById(id).value) || 0;
 function getStr(id) { return (document.getElementById(id).value || '').trim(); }
 
 function fmt(n) {
+  if (!isFinite(n)) return '₹0';
   if (n >= 10000000) return '₹' + (n/10000000).toFixed(2) + 'Cr';
   if (n >= 100000) return '₹' + (n/100000).toFixed(1) + 'L';
-  if (n >= 1000) return '₹' + Math.round(n).toLocaleString('en-IN');
-  return '₹' + Math.round(n);
+  return '₹' + nf.format(Math.round(n));
 }
 
 function fmtFull(n) {
-  return '₹' + Math.round(n).toLocaleString('en-IN');
+  if (!isFinite(n)) return '₹0';
+  return '₹' + nf.format(Math.round(n));
 }
 
 function computeScore(savingsRate, hasEmergency, debtRatio) {
@@ -933,9 +1294,112 @@ function getRiskProfile() {
     growth:       { eq: 0.6, debt: 0.2, gold: 0.1, liquid: 0.1 },
     aggressive:   { eq: 0.75, debt: 0.1, gold: 0.05, liquid: 0.1 }
   };
-  return riskMap[selectedRisk];
+  return riskMap[selectedRisk] || riskMap.conservative;
 }
 
+
+
+function readAdvancedInputs() {
+  return {
+    currentEmergency: getVal('current-emergency'),
+    currentInvestments: getVal('current-investments'),
+    assets: getVal('assets'),
+    liabilities: getVal('liabilities'),
+    lifeCover: getVal('life-cover'),
+    healthCover: getVal('health-cover'),
+    retirementAge: getVal('retirement-age') || 60,
+    inflationRate: (getVal('inflation-rate') || 6) / 100,
+    emiPrincipal: getVal('emi-principal'),
+    emiRate: getVal('emi-rate'),
+    emiYears: getVal('emi-years'),
+    extraSip: getVal('extra-sip'),
+    customCategoryName: getStr('custom-category-name') || 'Custom Category',
+    customCategoryAmount: getVal('custom-category-amount'),
+    customGoalTarget: getVal('custom-goal-target'),
+    customGoalYears: getVal('custom-goal-years')
+  };
+}
+
+function validateInputs({ age, income, totalExpenses, savingsTarget, adv }) {
+  const errors = [];
+  const warnings = [];
+  if (!income || income <= 0) errors.push('Enter a valid monthly income.');
+  if (age < 18 || age > 70) errors.push('Age should be between 18 and 70.');
+  if (!selectedRisk) errors.push('Choose a risk appetite.');
+  if (selectedGoals.length === 0) warnings.push('No goals selected, so the plan will focus on general wealth building.');
+  if (totalExpenses > income) warnings.push('Your expenses are higher than income. The plan will prioritize fixing cash flow before investing.');
+  if (savingsTarget > 0 && savingsTarget > Math.max(0, income - totalExpenses)) warnings.push('Your savings target is higher than current surplus. I capped investable surplus to what is available.');
+  if (adv.emiPrincipal > 0 && (!adv.emiRate || !adv.emiYears)) warnings.push('EMI calculator needs loan rate and tenure. I skipped EMI if those are missing.');
+  return { errors, warnings };
+}
+
+function monthlyRate(annualRate) { return annualRate / 12; }
+function sipFutureValue(monthly, annualRate, years) {
+  const r = monthlyRate(annualRate);
+  const n = Math.max(0, Math.round(years * 12));
+  if (!monthly || !n) return 0;
+  if (!r) return monthly * n;
+  return monthly * (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+}
+function lumpFutureValue(amount, annualRate, years) {
+  return amount * Math.pow(1 + annualRate, Math.max(0, years));
+}
+function monthlyEmi(principal, annualRatePct, years) {
+  const n = Math.max(1, Math.round(years * 12));
+  const r = (annualRatePct / 100) / 12;
+  if (!principal) return 0;
+  if (!r) return principal / n;
+  return principal * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+}
+function requiredSipForGoal(target, years, annualRate) {
+  const r = monthlyRate(annualRate);
+  const n = Math.max(1, Math.round(years * 12));
+  if (!r) return target / n;
+  return target / (((Math.pow(1 + r, n) - 1) / r) * (1 + r));
+}
+function estimateTaxNew(annualIncome) {
+  const taxable = Math.max(0, annualIncome - 75000);
+  if (taxable <= 700000) return 0;
+  return taxBySlab(taxable, APP_CONFIG.taxSlabs.new);
+}
+function estimateTaxOld(annualIncome) {
+  const taxable = Math.max(0, annualIncome - 50000 - 150000);
+  if (taxable <= 500000) return 0;
+  return taxBySlab(taxable, APP_CONFIG.taxSlabs.old);
+}
+function taxBySlab(amount, slabs) {
+  let tax = 0;
+  let lower = 0;
+  slabs.forEach(slab => {
+    const upper = slab.upTo;
+    const portion = Math.max(0, Math.min(amount, upper) - lower);
+    tax += portion * slab.rate;
+    lower = upper;
+  });
+  return Math.round(tax * 1.04);
+}
+function copyPlanSummary() {
+  if (!lastPlanSummary) {
+    alert('Generate a plan first, then copy the summary.');
+    return;
+  }
+  navigator.clipboard?.writeText(lastPlanSummary).then(() => {
+    alert('Plan summary copied.');
+  }).catch(() => {
+    const area = document.createElement('textarea');
+    area.value = lastPlanSummary;
+    document.body.appendChild(area);
+    area.select();
+    document.execCommand('copy');
+    document.body.removeChild(area);
+    alert('Plan summary copied.');
+  });
+}
+function resetSavedProfile() {
+  localStorage.removeItem('arthasutra_profile');
+  localStorage.removeItem('arthasutra_lang');
+  alert('Saved ArthaSutra data has been reset. Refresh the page to start clean.');
+}
 function generatePlan() {
   const name = getStr('name') || 'Friend';
   const age = getVal('age') || 25;
@@ -951,15 +1415,20 @@ function generatePlan() {
   const horizon = getStr('horizon');
   const taxRegime = getStr('tax-regime');
   const savingsTarget = getVal('savings-target');
+  const adv = readAdvancedInputs();
 
-  if (!income) { alert('Please enter your monthly income first.'); nextPanel(1); return; }
-
-  const totalExpenses = rent + food + transport + utilities + entertainment + loans + other;
+  const totalExpenses = rent + food + transport + utilities + entertainment + loans + other + adv.customCategoryAmount;
+  const validation = validateInputs({ age, income, totalExpenses, savingsTarget, adv });
+  if (validation.errors.length) {
+    alert(validation.errors.join('\n'));
+    nextPanel(!income ? 1 : 0);
+    return;
+  }
   const surplus = income - totalExpenses;
   const investable = Math.max(0, savingsTarget > 0 ? Math.min(savingsTarget, surplus) : surplus * 0.7);
 
-  const savingsRate = (surplus / income);
-  const debtRatio = loans / income;
+  const savingsRate = income ? (surplus / income) : 0;
+  const debtRatio = income ? (loans / income) : 0;
   const score = computeScore(savingsRate, selectedGoals.includes('emergency'), debtRatio);
 
   const rp = getRiskProfile();
@@ -972,7 +1441,7 @@ function generatePlan() {
   const isLong = horizon === 'long';
   const isMed = horizon === 'medium';
 
-  // Equity recommendations
+  // Equity recommendations (unchanged)
   let equityPlan = [];
   if (selectedRisk === 'conservative') {
     equityPlan = [
@@ -1064,8 +1533,8 @@ function generatePlan() {
         <div class="stat-card">
           <div class="stat-label">Total Expenses</div>
           <div class="stat-value ${totalExpenses > income * 0.8 ? 'negative' : 'neutral'}">${fmtFull(totalExpenses)}</div>
-          <div class="stat-tag">${Math.round(totalExpenses/income*100)}% of income</div>
-          <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100,totalExpenses/income*100)}%; background: ${totalExpenses > income*0.8 ? 'linear-gradient(90deg, #FF6B6B, #ff9f9f)' : 'linear-gradient(90deg, var(--gold), var(--gold-light))'}"></div></div>
+          <div class="stat-tag">${income ? Math.round(totalExpenses/income*100) : 0}% of income</div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${Math.min(100, income ? Math.round(totalExpenses/income*100) : 0)}%; background: ${totalExpenses > income*0.8 ? 'linear-gradient(90deg, #FF6B6B, #ff9f9f)' : 'linear-gradient(90deg, var(--gold), var(--gold-light))'}"></div></div>
         </div>
         <div class="stat-card">
           <div class="stat-label">Monthly Surplus</div>
@@ -1090,6 +1559,7 @@ function generatePlan() {
     { label: 'Entertainment', val: entertainment, color: '#ec4899' },
     { label: 'Loan EMIs', val: loans, color: '#3b82f6' },
     { label: 'Other', val: other, color: '#8b5cf6' },
+    { label: adv.customCategoryName, val: adv.customCategoryAmount, color: '#14b8a6' },
     { label: 'Savings', val: investable, color: '#C9A84C' }
   ].filter(d => d.val > 0);
 
@@ -1098,7 +1568,7 @@ function generatePlan() {
       <div class="legend-dot" style="background:${d.color}"></div>
       <div class="legend-name">${d.label}</div>
       <div>
-        <div class="legend-pct">${Math.round(d.val / income * 100)}%</div>
+        <div class="legend-pct">${income ? Math.round(d.val / income * 100) : 0}%</div>
         <div class="legend-amt">${fmtFull(d.val)}</div>
       </div>
     </div>
@@ -1222,7 +1692,7 @@ function generatePlan() {
     });
     html += `</div>`;
     const emergencyTarget = totalExpenses * 6;
-    html += `<div class="alert alert-info" style="margin-top:12px;">🎯 Target Emergency Fund: ${fmt(emergencyTarget)} (6 months of expenses). Time to build: ~${Math.ceil(emergencyTarget / liquid)} months at this rate.</div>`;
+    html += `<div class="alert alert-info" style="margin-top:12px;">🎯 Target Emergency Fund: ${fmt(emergencyTarget)} (6 months of expenses). Time to build: ~${liquid ? Math.ceil(emergencyTarget / liquid) : 'N/A'} months at this rate.</div>`;
   }
 
   html += `</div>`;
@@ -1365,7 +1835,6 @@ function generatePlan() {
         ⚡ <strong>Pro Tip:</strong> Combine 80C (ELSS ₹1.5L) + 80CCD(1B) NPS (₹50K) + 80D health insurance (₹25K) to get the maximum deduction of ₹2.25L in a single financial year.
       </div>
     </div>`;
-
   } else {
     // NEW REGIME TIPS
     html += `
@@ -1422,19 +1891,20 @@ function generatePlan() {
 
       <div class="plan-section-title">📊 New Regime Tax Slabs (FY 2024–25)</div>
       <div style="background:var(--bg3); border-radius:12px; overflow:hidden; border:1px solid var(--border);">
-        ${[
-          ['₹0 – ₹3,00,000', 'NIL', true],
-          ['₹3,00,001 – ₹7,00,000', '5% (+ 87A rebate → ₹0 tax)', annualIncome2 <= 700000],
-          ['₹7,00,001 – ₹10,00,000', '10%', annualIncome2 <= 1000000],
-          ['₹10,00,001 – ₹12,00,000', '15%', annualIncome2 <= 1200000],
-          ['₹12,00,001 – ₹15,00,000', '20%', annualIncome2 <= 1500000],
-          ['Above ₹15,00,000', '30%', annualIncome2 > 1500000]
-        ].map(([slab, rate, active]) => `
-          <div style="display:flex; justify-content:space-between; padding:11px 16px; border-bottom:1px solid rgba(255,255,255,0.04); background:${active && annualIncome2 > parseInt(slab) ? 'rgba(201,168,76,0.06)' : 'transparent'}">
-            <div style="font-size:0.82rem;">${slab}</div>
-            <div style="font-size:0.82rem; color:var(--gold); font-weight:600;">${rate}</div>
-          </div>
-        `).join('')}
+        ${(() => {
+          const slabs = [
+            {min:0, max:300000, label:'₹0 – ₹3,00,000', rate:'NIL'},
+            {min:300001, max:700000, label:'₹3,00,001 – ₹7,00,000', rate:'5% (+ 87A rebate → ₹0 tax)'},
+            {min:700001, max:1000000, label:'₹7,00,001 – ₹10,00,000', rate:'10%'},
+            {min:1000001, max:1200000, label:'₹10,00,001 – ₹12,00,000', rate:'15%'},
+            {min:1200001, max:1500000, label:'₹12,00,001 – ₹15,00,000', rate:'20%'},
+            {min:1500001, max: Infinity, label:'Above ₹15,00,000', rate:'30%'}
+          ];
+          return slabs.map(s => {
+            const active = annualIncome2 >= s.min && annualIncome2 <= s.max;
+            return `\n          <div style="display:flex; justify-content:space-between; padding:11px 16px; border-bottom:1px solid rgba(255,255,255,0.04); background:${active ? 'rgba(201,168,76,0.06)' : 'transparent'}">\n            <div style="font-size:0.82rem;">${s.label}</div>\n            <div style="font-size:0.82rem; color:var(--gold); font-weight:600;">${s.rate}</div>\n          </div>`;
+          }).join('');
+        })()}
       </div>
 
       <div class="plan-section-title">💡 Smart Strategies for New Regime</div>
@@ -1467,7 +1937,7 @@ function generatePlan() {
   if (selectedGoals.length > 0) {
     const goalData = {
       emergency: { label: 'Emergency Fund', target: totalExpenses * 6, years: 1, icon: '🏦' },
-      retirement: { label: 'Retirement Corpus', target: income * 12 * 25, years: 60 - age, icon: '👴' },
+      retirement: { label: 'Retirement Corpus', target: income * 12 * 25, years: Math.max(0, 60 - age), icon: '👴' },
       home: { label: 'Home Down Payment', target: 2000000, years: 5, icon: '🏠' },
       car: { label: 'Car Purchase', target: 800000, years: 3, icon: '🚗' },
       education: { label: 'Higher Education', target: 1000000, years: 3, icon: '🎓' },
@@ -1485,9 +1955,23 @@ function generatePlan() {
     selectedGoals.forEach(g => {
       if (!goalData[g]) return;
       const gd = goalData[g];
-      const monthsNeeded = Math.ceil(gd.target / Math.max(1, investable));
-      const yearsNeeded = (monthsNeeded / 12).toFixed(1);
-      html += `
+      if (investable <= 0) {
+        html += `
+        <div class="tax-row">
+          <div>
+            <div class="tr-left">${gd.icon} ${gd.label}</div>
+            <div class="tr-section">Target: ${fmt(gd.target)}</div>
+          </div>
+          <div style="text-align:right;">
+            <div class="tr-save">⚠️ Insufficient investable amount</div>
+            <div style="font-size:0.7rem; color:var(--muted);">Set monthly savings to start progress</div>
+          </div>
+        </div>
+      `;
+      } else {
+        const monthsNeeded = Math.ceil(gd.target / investable);
+        const yearsNeeded = (monthsNeeded / 12).toFixed(1);
+        html += `
         <div class="tax-row">
           <div>
             <div class="tr-left">${gd.icon} ${gd.label}</div>
@@ -1499,56 +1983,188 @@ function generatePlan() {
           </div>
         </div>
       `;
+      }
     });
 
     html += `</div>`;
   }
 
+
+  // ADVANCED FEATURE SECTIONS
+  const weightedReturn = (rp.eq * APP_CONFIG.assumptions.equityReturn) + (rp.debt * APP_CONFIG.assumptions.debtReturn) + (rp.gold * APP_CONFIG.assumptions.goldReturn) + (rp.liquid * APP_CONFIG.assumptions.liquidReturn);
+  const fv5 = sipFutureValue(investable, weightedReturn, 5) + lumpFutureValue(adv.currentInvestments, weightedReturn, 5);
+  const fv10 = sipFutureValue(investable, weightedReturn, 10) + lumpFutureValue(adv.currentInvestments, weightedReturn, 10);
+  const fv20 = sipFutureValue(investable, weightedReturn, 20) + lumpFutureValue(adv.currentInvestments, weightedReturn, 20);
+  const emiValue = monthlyEmi(adv.emiPrincipal, adv.emiRate, adv.emiYears);
+  const totalLoanPaid = emiValue * Math.max(0, adv.emiYears * 12);
+  const netWorth = adv.assets + adv.currentInvestments + adv.currentEmergency - adv.liabilities;
+  const emergencyNeed = totalExpenses * 6;
+  const emergencyGap = Math.max(0, emergencyNeed - adv.currentEmergency);
+  const recommendedLifeCover = Math.max(0, annualIncome * 10 + adv.liabilities - adv.assets);
+  const lifeGap = Math.max(0, recommendedLifeCover - adv.lifeCover);
+  const recommendedHealthCover = income >= 100000 ? 1500000 : income >= 50000 ? 1000000 : 500000;
+  const healthGap = Math.max(0, recommendedHealthCover - adv.healthCover);
+  const yearsToRetire = Math.max(0, adv.retirementAge - age);
+  const retirementMonthlyExpense = totalExpenses * Math.pow(1 + adv.inflationRate, yearsToRetire);
+  const retirementCorpus = retirementMonthlyExpense * 12 * 25;
+  const retirementProjection = sipFutureValue(investable, APP_CONFIG.assumptions.retirementReturn, yearsToRetire) + lumpFutureValue(adv.currentInvestments, APP_CONFIG.assumptions.retirementReturn, yearsToRetire);
+  const oldTax = estimateTaxOld(annualIncome2);
+  const newTax = estimateTaxNew(annualIncome2);
+  const betterRegime = oldTax <= newTax ? 'Old regime' : 'New regime';
+  const customGoalInflated = adv.customGoalTarget ? adv.customGoalTarget * Math.pow(1 + adv.inflationRate, adv.customGoalYears || 1) : 0;
+  const customGoalSip = customGoalInflated ? requiredSipForGoal(customGoalInflated, adv.customGoalYears || 1, weightedReturn) : 0;
+  const extraSip10 = sipFutureValue(adv.extraSip, weightedReturn, 10);
+  const payoffMode = loans / income > 0.25 ? 'Avalanche: attack the highest-interest debt first while paying minimums on the rest.' : 'Snowball: clear the smallest balance first to build momentum, then roll payments into the next debt.';
+
+  if (validation.warnings.length) {
+    html += `
+      <div class="card">
+        <div class="card-title">Input Checks</div>
+        <div class="card-sub">A few things to notice before acting on the plan.</div>
+        <ul class="warning-list">${validation.warnings.map(w => `<li>${w}</li>`).join('')}</ul>
+      </div>`;
+  }
+
+  html += `
+    <div class="card">
+      <div class="card-title">New Smart Tools</div>
+      <div class="card-sub">SIP, EMI, goal, emergency fund, net worth, insurance, retirement, tax comparison, and scenario simulator.</div>
+      <div class="mini-grid">
+        <div class="compact-card"><div class="kicker">SIP Projection</div><div class="big">${fmt(fv10)}</div><div class="small">Estimated 10-year value from current investments + ${fmtFull(investable)}/mo at ${Math.round(weightedReturn*100)}% blended return.</div></div>
+        <div class="compact-card"><div class="kicker">EMI Calculator</div><div class="big">${adv.emiPrincipal ? fmtFull(emiValue) : 'Add loan'}</div><div class="small">${adv.emiPrincipal ? 'Total interest: ' + fmtFull(Math.max(0, totalLoanPaid - adv.emiPrincipal)) : 'Enter loan amount, rate, and tenure to calculate EMI.'}</div></div>
+        <div class="compact-card"><div class="kicker">Emergency Gap</div><div class="big">${fmtFull(emergencyGap)}</div><div class="small">Target: ${fmtFull(emergencyNeed)}. Current: ${fmtFull(adv.currentEmergency)}.</div></div>
+        <div class="compact-card"><div class="kicker">Net Worth</div><div class="big">${fmtFull(netWorth)}</div><div class="small">Assets + investments + emergency fund minus liabilities.</div></div>
+        <div class="compact-card"><div class="kicker">Insurance Gap</div><div class="big">${fmtFull(lifeGap + healthGap)}</div><div class="small">Life gap: ${fmtFull(lifeGap)}. Health gap: ${fmtFull(healthGap)}.</div></div>
+        <div class="compact-card"><div class="kicker">Retirement Readiness</div><div class="big">${retirementCorpus ? Math.min(100, Math.round(retirementProjection / retirementCorpus * 100)) : 0}%</div><div class="small">Projected: ${fmt(retirementProjection)} vs target corpus ${fmt(retirementCorpus)} at age ${adv.retirementAge}.</div></div>
+        <div class="compact-card"><div class="kicker">Tax Comparison</div><div class="big">${betterRegime}</div><div class="small">Old: ${fmtFull(oldTax)}. New: ${fmtFull(newTax)}. Estimate for ${APP_CONFIG.taxYear}.</div></div>
+        <div class="compact-card"><div class="kicker">What-if Extra SIP</div><div class="big">${fmt(extraSip10)}</div><div class="small">${fmtFull(adv.extraSip)}/mo may add this much in 10 years.</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Goal, Debt & Inflation Planner</div>
+      <div class="card-sub">Turns your optional inputs into direct action numbers.</div>
+      <div class="tax-row">
+        <div><div class="tr-left">Custom Goal SIP</div><div class="tr-section">${adv.customGoalTarget ? 'Inflation-adjusted target: ' + fmtFull(customGoalInflated) : 'Enter a goal target and deadline to activate this.'}</div></div>
+        <div class="tr-save">${adv.customGoalTarget ? fmtFull(customGoalSip) + '/mo' : 'Add goal'}</div>
+      </div>
+      <div class="tax-row">
+        <div><div class="tr-left">Debt Payoff Strategy</div><div class="tr-section">${payoffMode}</div></div>
+        <div class="tr-save">${Math.round(debtRatio * 100)}% DTI</div>
+      </div>
+      <div class="tax-row">
+        <div><div class="tr-left">Corpus Milestones</div><div class="tr-section">5 years: ${fmt(fv5)} · 10 years: ${fmt(fv10)} · 20 years: ${fmt(fv20)}</div></div>
+        <div class="tr-save">${Math.round(weightedReturn * 100)}% assumed</div>
+      </div>
+      <div class="tax-row">
+        <div><div class="tr-left">Financial Calendar</div><div class="tr-section">Monthly SIP/EMI review, quarterly net-worth update, January tax-proof check, March 80C/NPS top-up, July ITR filing, annual insurance renewal.</div></div>
+        <div class="tr-save">Recurring</div>
+      </div>
+      <div class="tax-row">
+        <div><div class="tr-left">Milestones</div><div class="tr-section">${emergencyGap === 0 ? 'Emergency fund ready' : 'Emergency fund in progress'} · ${debtRatio <= 0.25 ? 'Debt controlled' : 'Debt needs attention'} · ${investable > 0 ? 'SIP ready' : 'Cash-flow first'}</div></div>
+        <div class="tr-save">${healthLabel}</div>
+      </div>
+    </div>
+  `;
+
+  lastPlanSummary = [
+    'ArthaSutra Wealth Blueprint - ' + name,
+    'Income: ' + fmtFull(income) + '/mo',
+    'Expenses: ' + fmtFull(totalExpenses) + '/mo',
+    'Surplus: ' + fmtFull(surplus) + '/mo',
+    'Investable: ' + fmtFull(investable) + '/mo',
+    'Financial score: ' + score + '/100',
+    'Emergency gap: ' + fmtFull(emergencyGap),
+    'Net worth: ' + fmtFull(netWorth),
+    '10-year SIP projection: ' + fmt(fv10),
+    'Suggested tax regime: ' + betterRegime,
+    'Disclaimer: Educational estimate, not financial advice.'
+  ].join('\n');
+
+  // GOVERNMENT SCHEMES
+  html += `
+    <div class="card">
+      <div class="card-title">🏛️ Government Schemes & Support</div>
+      <div class="card-sub">Relevant central initiatives to reduce costs and boost savings for Indian households.</div>
+      <div class="invest-cards">
+        <div class="invest-card">
+          <div class="ic-top"><div class="ic-name">Pradhan Mantri Awaas Yojana (PMAY)</div><div class="ic-tag tag-safe">Housing</div></div>
+          <div class="ic-desc">Subsidy for affordable home loans and credit-linked subsidy for first-time homebuyers in urban and rural India.</div>
+        </div>
+        <div class="invest-card">
+          <div class="ic-top"><div class="ic-name">Sukanya Samriddhi Yojana (SSY)</div><div class="ic-tag tag-safe">Girl Child</div></div>
+          <div class="ic-desc">High-interest small savings scheme for girls; eligible deposits qualify for Section 80C deduction.</div>
+        </div>
+        <div class="invest-card">
+          <div class="ic-top"><div class="ic-name">Atal Pension Yojana (APY)</div><div class="ic-tag tag-safe">Pension</div></div>
+          <div class="ic-desc">Guaranteed monthly pension for workers in the unorganized sector, with government co-contribution for eligible subscribers.</div>
+        </div>
+        <div class="invest-card">
+          <div class="ic-top"><div class="ic-name">PMJJBY / PMSBY</div><div class="ic-tag tag-safe">Insurance</div></div>
+          <div class="ic-desc">Affordable life and accident cover for Indian citizens under ₹330/year policy premiums.</div>
+        </div>
+        <div class="invest-card">
+          <div class="ic-top"><div class="ic-name">Pradhan Mantri Mudra Yojana (PMMY)</div><div class="ic-tag tag-safe">Credit</div></div>
+          <div class="ic-desc">Collateral-free small business loans to startups and micro-enterprises through Mudra banks and NBFCs.</div>
+        </div>
+        <div class="invest-card">
+          <div class="ic-top"><div class="ic-name">Stand Up India</div><div class="ic-tag tag-safe">Entrepreneurship</div></div>
+          <div class="ic-desc">Bank loans for women and SC/ST entrepreneurs to start manufacturing, services, or trading ventures.</div>
+        </div>
+      </div>
+    </div>
+  `;
+
   // ACTION PLAN
   html += `
     <div class="card">
-      <div class="card-title">🚀 30-Day Action Plan</div>
-      <div class="card-sub">Start today. Wealth is built in consistent small steps.</div>
-      <div class="tax-row"><div class="tr-left">✅ Week 1</div><div style="font-size:0.82rem; color:var(--muted);">Open a Demat + MF account (Zerodha / Groww / Kuvera)</div></div>
-      <div class="tax-row"><div class="tr-left">✅ Week 1</div><div style="font-size:0.82rem; color:var(--muted);">Set up SIP mandates for ${fmtFull(eq)}/month in equity funds</div></div>
-      <div class="tax-row"><div class="tr-left">✅ Week 2</div><div style="font-size:0.82rem; color:var(--muted);">Open PPF account at post office or SBI. Start ₹500/month</div></div>
-      <div class="tax-row"><div class="tr-left">✅ Week 2</div><div style="font-size:0.82rem; color:var(--muted);">Open NPS account at eNPS.nsdl.com for pension + tax benefit</div></div>
-      <div class="tax-row"><div class="tr-left">✅ Week 3</div><div style="font-size:0.82rem; color:var(--muted);">Buy first Sovereign Gold Bond when RBI window opens (twice a year)</div></div>
-      <div class="tax-row"><div class="tr-left">✅ Week 4</div><div style="font-size:0.82rem; color:var(--muted);">Review and track all investments with Moneycontrol / ET Money</div></div>
-      <div style="margin-top:16px;" class="alert alert-warn">⚡ Remember: Automate everything. Set and don't touch for 3+ years. Time in market > timing the market.</div>
+      <div class="card-title">${t('action_plan_title')}</div>
+      <div class="card-sub">${t('action_plan_sub')}</div>
+      <div class="tax-row"><div class="tr-left">${t('week1')}</div><div style="font-size:0.82rem; color:var(--muted);">${t('week1_action1')}</div></div>
+      <div class="tax-row"><div class="tr-left">${t('week1')}</div><div style="font-size:0.82rem; color:var(--muted);">${t('week1_action2', {amt: fmtFull(eq)})}</div></div>
+      <div class="tax-row"><div class="tr-left">${t('week1')}</div><div style="font-size:0.82rem; color:var(--muted);">${t('week2_action1')}</div></div>
+      <div class="tax-row"><div class="tr-left">${t('week1')}</div><div style="font-size:0.82rem; color:var(--muted);">${t('week2_action2')}</div></div>
+      <div class="tax-row"><div class="tr-left">${t('week1')}</div><div style="font-size:0.82rem; color:var(--muted);">${t('week3_action1')}</div></div>
+      <div class="tax-row"><div class="tr-left">${t('week1')}</div><div style="font-size:0.82rem; color:var(--muted);">${t('week4_action1')}</div></div>
+      <div style="margin-top:16px;" class="alert alert-warn">${t('remember_alert')}</div>
     </div>
   `;
 
   document.getElementById('plan-output').innerHTML = html;
   showPanel(3);
 
-  // Draw chart
+  // Draw chart (safe)
   setTimeout(() => {
     const ctx = document.getElementById('spend-chart');
     if (!ctx) return;
-    if (chartObj) chartObj.destroy();
-    chartObj = new Chart(ctx.getContext('2d'), {
-      type: 'doughnut',
-      data: {
-        labels: chartData.map(d => d.label),
-        datasets: [{
-          data: chartData.map(d => d.val),
-          backgroundColor: chartData.map(d => d.color),
-          borderWidth: 2,
-          borderColor: '#0F1220',
-          hoverOffset: 6
-        }]
-      },
-      options: {
-        cutout: '68%',
-        plugins: { legend: { display: false }, tooltip: {
-          callbacks: {
-            label: (ctx) => ` ${ctx.label}: ₹${Math.round(ctx.raw).toLocaleString('en-IN')} (${Math.round(ctx.raw/income*100)}%)`
-          }
-        }},
-        animation: { animateRotate: true, duration: 1000 }
-      }
-    });
+    if (chartObj && typeof chartObj.destroy === 'function') chartObj.destroy();
+    if (typeof Chart === 'undefined') return; // Chart.js not available
+    try {
+      chartObj = new Chart(ctx.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: chartData.map(d => d.label),
+          datasets: [{
+            data: chartData.map(d => d.val),
+            backgroundColor: chartData.map(d => d.color),
+            borderWidth: 2,
+            borderColor: '#0F1220',
+            hoverOffset: 6
+          }]
+        },
+        options: {
+          cutout: '68%',
+          plugins: { legend: { display: false }, tooltip: {
+            callbacks: {
+              label: (ctx) => ` ${ctx.label}: ₹${nf.format(Math.round(ctx.raw))} (${income ? Math.round(ctx.raw/income*100) : 0}%)`
+            }
+          }},
+          animation: { animateRotate: true, duration: 1000 }
+        }
+      });
+    } catch (e) {
+      console.warn('Chart render failed', e);
+    }
   }, 100);
 }
 
